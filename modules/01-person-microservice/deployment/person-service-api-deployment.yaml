@@ -2,8 +2,8 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    service: udaconnect-api
-  name: udaconnect-api
+    service: person-svc-api
+  name: person-svc-api
 spec:
   ports:
   - name: "5000"
@@ -11,53 +11,53 @@ spec:
     targetPort: 5000
     nodePort: 30001
   selector:
-    service: udaconnect-api
+    service: person-svc-api
   type: NodePort
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    service: udaconnect-api
-  name: udaconnect-api
+    service: person-svc-api
+  name: person-deployment-api
 spec:
   replicas: 1
   selector:
     matchLabels:
-      service: udaconnect-api
+      service: person-svc-api
   template:
     metadata:
       labels:
-        service: udaconnect-api
+        service: person-svc-api
     spec:
       containers:
-      - image: emekamomodu/uda-connect-api:latest
-        name: udaconnect-api
+      - image: fthiagomedeiros/person-service-api:latest
+        name: person-service-api
         imagePullPolicy: Always
         env:
         - name: DB_USERNAME
           valueFrom:
             configMapKeyRef:
-              name: db-env
+              name: db-person-map
               key: DB_USERNAME
         - name: DB_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: db-secret
+              name: db-person-secret
               key: DB_PASSWORD
         - name: DB_NAME
           valueFrom:
             configMapKeyRef:
-              name: db-env
+              name: db-person-map
               key: DB_NAME
         - name: DB_HOST
           valueFrom:
             configMapKeyRef:
-              name: db-env
+              name: db-person-map
               key: DB_HOST
         - name: DB_PORT
           valueFrom:
             configMapKeyRef:
-              name: db-env
+              name: db-person-map
               key: DB_PORT
       restartPolicy: Always

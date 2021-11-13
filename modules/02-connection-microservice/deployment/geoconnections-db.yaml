@@ -1,0 +1,86 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: postgres-volume-geoconnections
+  labels:
+    type: local
+    app: postgres-geoconnections
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 256Mi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: "/mnt/data/geoconnections-db"
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: postgres-geoconnections-pv-claim
+  labels:
+    app: postgres-geoconnections
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 256Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-geoconnections
+  labels:
+    app: postgres-geoconnections
+spec:
+  type: NodePort
+  selector:
+    app: postgres-geoconnections
+  ports:
+   - port: 5432
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-geoconnections
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres-geoconnections
+  template:
+    metadata:
+      labels:
+        app: postgres-geoconnections
+    spec:
+      containers:
+        - name: postgres-geoconnections-container
+          image: postgis/postgis:12-2.5-alpine
+          imagePullPolicy: "IfNotPresent"
+          ports:
+            - containerPort: 5432
+          env:
+          - name: POSTGRES_USER
+            valueFrom:
+              configMapKeyRef:
+                name: db-geoconnections-map
+                key: DB_USERNAME
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: db-geoconnections-secret
+                key: DB_PASSWORD
+          - name: POSTGRES_DB
+            valueFrom:
+              configMapKeyRef:
+                name: db-geoconnections-map
+                key: DB_NAME
+          volumeMounts:
+            - mountPath: /var/lib/geoconnectionsdb/data
+              name: geoconnections-db
+      volumes:
+        - name: geoconnections-db
+          persistentVolumeClaim:
+            claimName: postgres-geoconnections-pv-claim

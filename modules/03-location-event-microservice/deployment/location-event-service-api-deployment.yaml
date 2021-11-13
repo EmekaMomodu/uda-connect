@@ -1,0 +1,50 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    service: location-event-api
+  name: location-event-svc-api
+spec:
+  ports:
+  - name: "5005"
+    port: 5005
+    targetPort: 5005
+    nodePort: 30003
+  selector:
+    service: location-event-api
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    service: location-event-api
+  name: location-event-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: location-event-api
+  template:
+    metadata:
+      labels:
+        service: location-event-api
+    spec:
+      containers:
+      - image: fthiagomedeiros/location-event-service-api:latest
+        name: location-event-api-container
+        imagePullPolicy: Always
+        env:
+        - name: KAFKA_URL
+          valueFrom:
+            configMapKeyRef:
+              name: config-location-event-map
+              key: KAFKA_URL
+        - name: KAFKA_TOPIC
+          valueFrom:
+            configMapKeyRef:
+              name: config-location-event-map
+              key: KAFKA_TOPIC
+        - name: PYTHONUNBUFFERED
+          value: '0'
+      restartPolicy: Always

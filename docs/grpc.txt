@@ -1,0 +1,19 @@
+The gRPC documentation for Location-Event microservice.
+The request has a payload with userId, latitude and longitude.
+
+To make a sample request, please have a look in the file in the modules folder.
+modules/03-location-event-microservice/location-event-client-grpc.py
+
+This python file is ready to send a request to the location-event service deployed into kubernetes through gRPC 
+
+'''
+message LocationMessage {
+  int32 userId = 1;
+  int32 latitude = 2;
+  int32 longitude = 3;
+}
+
+service LocationService {
+  rpc Create(LocationMessage) returns (LocationMessage);
+}
+'''
