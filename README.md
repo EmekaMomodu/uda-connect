@@ -120,7 +120,7 @@ kafka-release-0             1/1     Running   1          7m30s
 
 Now, you will be able to deploy the services.
 For a better understanding, check the architectural diagram
-![alt text](https://raw.githubusercontent.com/fthiagomedeiros/cloud-native-architecture-udaconnect-project/development/docs/architecture_design.png "Architectural Diagram -  Now you have set up a Kafka component.")
+![alt text](https://github.com/EmekaMomodu/uda-connect/blob/main/docs/architecture_design.png "Architectural Diagram -  Now you have set up a Kafka component.")
 
 #### PERSON-MICROSERVICE
 1. Get into the '01-person-microservice' folder and run `$ kubectl apply -f deployment/`
