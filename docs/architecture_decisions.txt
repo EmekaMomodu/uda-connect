@@ -1,11 +1,12 @@
-location-event-microservice process user coordinates sent by mobiles devices. This communication is established using gRPC.
-This decision is based in the fact of efficiency and the requirements about lot of users sending data concurrently.
-It could be a RESTFul API once this service only sends data directly to Kafka and no high loading processing is done.
+The Location-Event Service interacts with the Location Client using gRPC message passing technique to retrieve user
+coordinates. I chose the gRPC message passing technique because a high volume of user coordinate data can be sent in
+concurrently, thus efficiency and great performance are imperative, and gRPC is a highly performant message passing
+technique.
 
-Behind the LocationEvent has a Kafka cluster that receives this location data that will be consumed by location-processor-microservice
-and this data will be stored in postgres database.
+Between the Location-Event Service and the Location-Processor Service is a Message Queue implemented with Kafka. This
+decision was made because, a distributed queue like Kafka handles large volumes of data efficiently, enabling the
+Location-Processor Service not to be overwhelmed.
 
-Location service is the service that interacts through a RESTFul API with the React Frontend.
-Person Microservice is other RESTFul API service responsible to keep user information.
-Location Microservice gets data from Person microservice when a request to find out possible connection is made.
-It is done by RESTFul API, however, It could be a cache in front of the service to retrieve quickly user information
+The Connection Service and Person Service both utilize REST for their message passing technique when interacting with
+each other as well as when interacting with the Front End, this decision was made because the interactions are
+synchronous and REST is performant enough to handle the requests.
