@@ -30,7 +30,7 @@ spec:
         service: location-processor-api
     spec:
       containers:
-      - image: fthiagomedeiros/location-processor-service-api:latest
+      - image: emekamomodu/location-processor-service-api:latest
         name: location-processor-container
         imagePullPolicy: Always
         env:

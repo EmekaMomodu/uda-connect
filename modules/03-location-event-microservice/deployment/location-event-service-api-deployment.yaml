@@ -31,7 +31,7 @@ spec:
         service: location-event-api
     spec:
       containers:
-      - image: fthiagomedeiros/location-event-service-api:latest
+      - image: emekamomodu/location-event-service-api:latest
         name: location-event-api-container
         imagePullPolicy: Always
         env:

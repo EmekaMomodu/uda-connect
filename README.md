@@ -129,8 +129,6 @@ For a better understanding, check the architectural diagram
    The step 2 will populate the postgres database **_(The pod name will be something like (postgres-person-xxxxxid-pod))_**
 3. Access the http://localhost:30001/api/persons for testing
 
-![alt text](https://github.com/fthiagomedeiros/cloud-native-architecture-udaconnect-project/blob/master/docs/person-pod-db-script-execution.png "See database script")
-
 #### CONNECTION-MICROSERVICE
 1. Get into the '02-connection-microservice' folder and run `$ kubectl apply -f deployment/`
 2. after you have the pods running, execute the script located in `02-connection-microservice/scripts/run_db_command.sh` with the pod identifier
@@ -149,9 +147,6 @@ For a better understanding, check the architectural diagram
 1. Get into the '05-frontend' folder and run `$ kubectl apply -f deployment/
 
 Wait until you have every pod running and access the http://localhost:30000/
-You will see the image below.
-
-![alt text](https://raw.githubusercontent.com/fthiagomedeiros/cloud-native-architecture-udaconnect-project/development/docs/frontend.png "Frontend")
 
 
 ### Verifying it Works
@@ -165,6 +160,5 @@ These pages should also load on your web browser:
 * `http://localhost:30000/` - Frontend ReactJS Application
 
 To send records, please execute the python file for location-event-microservice
-[grpc-client](https://github.com/fthiagomedeiros/cloud-native-architecture-udaconnect-project/blob/development/modules/03-location-event-microservice/location-event-client-grpc.py)
+[grpc-client](https://github.com/EmekaMomodu/uda-connect/blob/main/modules/03-location-event-microservice/location-event-client-grpc.py)
 
-<span style="color:red">When running the grpc_client, please in the field userId try to insert valid data from API http://127.0.0.1:30001/api/persons, which userId values are 100, 200, 300, 400, 500 and 600. **I am not validating the userId when send a request to location-event-microservice**. You may insert a new user and you will be able to test this new user</span>.

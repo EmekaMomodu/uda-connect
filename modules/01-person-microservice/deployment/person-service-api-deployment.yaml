@@ -31,7 +31,7 @@ spec:
         service: person-svc-api
     spec:
       containers:
-      - image: fthiagomedeiros/person-service-api:latest
+      - image: emekamomodu/person-service-api:latest
         name: person-service-api
         imagePullPolicy: Always
         env:
