@@ -7,13 +7,11 @@ from flask import request
 from flask_accepts import accepts, responds
 from flask_restx import Namespace, Resource
 from typing import List
+import logging
 
 DATE_FORMAT = "%Y-%m-%d"
 
 api = Namespace("UdaConnect", description="Connections via geolocation.")  # noqa
-
-
-# TODO: This needs better exception handling
 
 
 @api.route("/persons")
@@ -21,14 +19,20 @@ class PersonsResource(Resource):
     @accepts(schema=PersonSchema)
     @responds(schema=PersonSchema)
     def post(self) -> Person:
-        payload = request.get_json()
-        new_person: Person = PersonService.create(payload)
-        return new_person
+        try:
+            payload = request.get_json()
+            new_person: Person = PersonService.create(payload)
+            return new_person
+        except Exception as e:
+            logging.exception(e)
 
     @responds(schema=PersonSchema, many=True)
     def get(self) -> List[Person]:
-        persons: List[Person] = PersonService.retrieve_all()
-        return persons
+        try:
+            persons: List[Person] = PersonService.retrieve_all()
+            return persons
+        except Exception as e:
+            logging.exception(e)
 
 
 @api.route("/persons/<person_id>")
@@ -36,5 +40,8 @@ class PersonsResource(Resource):
 class PersonResource(Resource):
     @responds(schema=PersonSchema)
     def get(self, person_id) -> Person:
-        person: Person = PersonService.retrieve(person_id)
-        return person
+        try:
+            person: Person = PersonService.retrieve(person_id)
+            return person
+        except Exception as e:
+            logging.exception(e)
