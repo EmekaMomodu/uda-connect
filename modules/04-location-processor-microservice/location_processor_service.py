@@ -32,8 +32,10 @@ def save_in_db(location):
     conn.execute(insert)
 
 
-for location in consumer:
-    message = location.value.decode('utf-8')
-    print('{}'.format(message))
-    location_message = json.loads(message)
-    save_in_db(location_message)
+while True:
+    for location in consumer:
+        message = location.value.decode('utf-8')
+        print('{}'.format(message))
+        location_message = json.loads(message)
+        save_in_db(location_message)
+
